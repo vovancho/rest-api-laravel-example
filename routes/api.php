@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['as' => 'api.', 'namespace' => 'Api'],
+    function () {
+        Route::get('/', 'HomeController@home');
+
+        Route::middleware('auth:api')->group(function () {
+            Route::resource('products', 'ProductController')->only('index', 'show', 'store', 'update', 'destroy');
+        });
+    });

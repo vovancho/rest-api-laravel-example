@@ -47,6 +47,8 @@ services:
             - mysql
             - mysql-test
             - redis
+        env_file:
+            - variables.env
         environment:
             - "DB_PORT=3306"
             - "DB_HOST=mysql"

@@ -1,7 +1,7 @@
 FROM php:7.2-fpm
 
 RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client libicu-dev \
-    && docker-php-ext-install mcrypt pdo_mysql intl
+    && docker-php-ext-install pdo_mysql intl
 
 # Xdebug, Redis
 RUN pecl install redis \
