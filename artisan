@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-
+//aa
 define('LARAVEL_START', microtime(true));
 
 /*
