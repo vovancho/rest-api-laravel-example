@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'name' => [
                 'required',
                 'max:255',
-                ($id = $this->get('id')) ? Rule::unique('products')->ignore($id) : Rule::unique('products'),
+                ($this->product) ? Rule::unique('products')->ignore($this->product->id) : Rule::unique('products'),
             ],
             'price' => 'required|numeric',
         ];

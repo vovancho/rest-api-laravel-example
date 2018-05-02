@@ -213,5 +213,5 @@ return [
 
     ],
 
-    'faker_locale' => 'ru_RU',
+    'faker_locale' => 'ru',
 ];

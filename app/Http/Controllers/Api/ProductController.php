@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -40,7 +41,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $this->service->create($request);
-        return response()->setStatusCode(Response::HTTP_CREATED);
+        return response('', Response::HTTP_CREATED);
     }
 
     /**
@@ -64,7 +65,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
         $this->service->edit($product, $request);
-        return response()->setStatusCode(Response::HTTP_OK);
+        return response('', Response::HTTP_OK);
     }
 
     /**
@@ -76,6 +77,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $this->service->remove($product);
-        return response()->setStatusCode(Response::HTTP_NO_CONTENT);
+        return response('', Response::HTTP_NO_CONTENT);
     }
 }
