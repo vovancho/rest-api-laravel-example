@@ -29,5 +29,6 @@
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="MAIL_DRIVER" value="array"/>
         <env name="DB_HOST" value="mysql-test"/>
+        <env name="DB_DATABASE" value="restapi_test"/>
     </php>
 </phpunit>

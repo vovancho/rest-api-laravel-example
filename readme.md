@@ -1,59 +1,118 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## Пример REST приложения на Laravel 5.6 [![Build Status](https://travis-ci.org/vovancho/rest-api-laravel-example.svg?branch=master)](https://travis-ci.org/vovancho/rest-api-laravel-example)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### https://rest-api-laravel.local/
 
-## About Laravel
+![Example REST](https://github.com/vovancho/rest-api-laravel-example/blob/master/project/home.jpg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### https://rest-api-laravel.local/api/
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Запрос | Параметры | Описание
+--- | --- | ---
+`POST https://rest-api-laravel.local/api/oauth/token` | `{"grant_type":"password", "username":"admin", "password":"123456", "client_id":"client_id", "client_secret":"client_secret"}` | Авторизация по OAuth2. Логин `admin`. Пароль `123456`.
+`GET https://rest-api-laravel.local/products` | | Вывести список продуктов
+`POST https://rest-api-laravel.local/products` | `name` - Наименование продукта <BR> `price` - Стоимость продукта | Добавить новый продукт
+`PUT https://rest-api-laravel.local/products/{productId}` | `productId` - ИД продукта <BR> `name` - Наименование продукта <BR> `price` - Стоимость продукта | Изменить запись продукта с ИД `productId`
+`DELETE https://rest-api-laravel.local/{productId}` | `productId` - ИД продукта | Удалить запись продукта с ИД `productId`
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+### Документация API на [Swagger](https://swagger.io/)
 
-## Learning Laravel
+`https://rest-api-laravel.local/docs/index.html`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+![Example REST](https://github.com/vovancho/rest-api-laravel-example/blob/master/project/swagger.jpg)
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+### Docker
 
-## Laravel Sponsors
+#### variables.env
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+В файле `variables.env` находятся настройки для `docker-compose.yml`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+#### docker2boot (Docker ToolBox)
 
-## Contributing
+Конфигурация виртуальной машины `docker2boot`:
+  - docker-machine stop
+  - *Если необходимо, добавить папку **"C:\www"***:
+    - vboxmanage sharedfolder add default --name "c/www" --hostpath "C:\www" --automount
+  - Добавляем порт ssl  
+    - VBoxManage modifyvm "default" --natpf1 "nginx_ssl,tcp,,443,,443"
+  - *Если необходимо перенаправлять http на https*: 
+    - VBoxManage modifyvm "default" --natpf1 "nginx_http,tcp,,80,,80"
+  - *Если необходимо, добавить порт для **XDebug***: 
+    - VBoxManage modifyvm "default" --natpf1 "xdebug,tcp,,9001,,9001"
+  - docker-machine start
+  
+#### Запуск
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+    docker-compose up -d
+    docker-compose exec -T php-cli php artisan migrate   
+```
 
-## Security Vulnerabilities
+#### Автозаполнение базы данных продуктами
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+    docker-compose exec -T php-cli php artisan db:seed
+```
 
-## License
+#### Hosts
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Добавить в файл `hosts` имена серверов:
+  - <IP Docker хоста> rest-api-laravel.local
+  
+#### docker-compose.yml
+
+У сервиса `php-fpm` есть переменная окружения `XDEBUG_CONFIG`. Если нужен XDebug, необходимо вписать ip адрес `remote_host=<ip адрес удаленного xdebug клиента>`.
+Если локальный сервер, заменить `remote_host` на `remote_connect_back=1`
+
+#### API
+
+**Авторизация:**
+
+Добавляем клиента:
+
+```bash
+    php artisan passport:client --passport
+```
+
+Запрашиваем авторизацию:
+
+POST https://rest-api-laravel.local/api/oauth/token
+
+Text:
+```json
+{  
+   "grant_type":"password",
+   "username":"admin",
+   "password":"123456",
+   "client_id":"client_id",
+   "client_secret":"client_secret_hash"
+}
+```
+
+Response:
+```json
+{  
+   "access_token":"18e4d2f2b4bcf7f37a93d1fc8334cffbf0c8331f",
+   "expires_in":86400,
+   "token_type":"Bearer",
+   "scope":null,
+   "refresh_token":"cbf38fdeefb170913768521b3b4c4317ad77dea8"
+}
+```
+
+Headers:
+
+Name          | Value
+------------- | -------------
+Accept        | application/json
+Cache-Control | no-cache
+Content-Type  | application/json
+Authorization | Bearer bff80282a641796870cd5f7de10a8224e7f70e21 `(access_token)`
+
+### Тесты
+
+Запуск `api` тестов:
+
+```bash
+    docker-compose up -d
+    docker-compose exec php-cli php vendor/bin/phpunit
+```

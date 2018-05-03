@@ -8,8 +8,6 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <title>Laravel</title>
 </head>
 <body>
