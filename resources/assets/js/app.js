@@ -36,3 +36,10 @@ const app = new Vue({
     el: '#app'
 });
 
+$(function() {
+    $('#products-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: 'https://rest-api-laravel.local/eloquent/basic-data'
+    });
+});

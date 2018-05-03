@@ -1,5 +1,7 @@
 <?php
 
+use Yajra\DataTables\DataTablesServiceProvider;
+
 return [
 
     /*
@@ -162,6 +164,7 @@ return [
 
         \Laravel\Passport\PassportServiceProvider::class,
 
+        DataTablesServiceProvider::class,
     ],
 
     /*
