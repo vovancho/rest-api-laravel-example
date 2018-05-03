@@ -4,6 +4,8 @@
 
 ![Example REST](https://github.com/vovancho/rest-api-laravel-example/blob/master/project/home.jpg)
 
+**<p align="center">Для вывода продуктов используется [DataTables](https://github.com/yajra/laravel-datatables)</p>**
+
 ### https://rest-api-laravel.local/api/
 
 Запрос | Параметры | Описание
@@ -13,6 +15,7 @@
 `POST https://rest-api-laravel.local/products` | `name` - Наименование продукта <BR> `price` - Стоимость продукта | Добавить новый продукт
 `PUT https://rest-api-laravel.local/products/{productId}` | `productId` - ИД продукта <BR> `name` - Наименование продукта <BR> `price` - Стоимость продукта | Изменить запись продукта с ИД `productId`
 `DELETE https://rest-api-laravel.local/{productId}` | `productId` - ИД продукта | Удалить запись продукта с ИД `productId`
+`GET https://rest-api-laravel.local/products/{productId}` | `productId` - ИД продукта <BR>  | Вывести запись продукта с ИД `productId`
 
 ### Документация API на [Swagger](https://swagger.io/)
 
@@ -44,13 +47,13 @@
 
 ```
     docker-compose up -d
-    docker-compose exec -T php-cli php artisan migrate   
+    docker-compose exec php-cli php artisan migrate   
 ```
 
 #### Автозаполнение базы данных продуктами
 
 ```
-    docker-compose exec -T php-cli php artisan db:seed
+    docker-compose exec php-cli php artisan db:seed
 ```
 
 #### Hosts
@@ -70,7 +73,7 @@
 Добавляем клиента:
 
 ```bash
-    php artisan passport:client --passport
+    docker-compose exec php-cli php artisan passport:client --passport
 ```
 
 Запрашиваем авторизацию:
